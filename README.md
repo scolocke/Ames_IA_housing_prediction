@@ -1,170 +1,167 @@
-# Project 2 - Ames Housing Data and Kaggle Challenge
+# Problem Statement
+Look to  provide a model to find undervalued properties for investment/flipping and assess what factors drive price
+ - How well do we predict typical prices?
+ - What features dictate the price the most?
 
-Welcome to Project 2! Let's model!
+# Data Dictionary:
 
-**Primary Learning Objectives:**
-1. Creating and iteratively refining a regression model.
-2. Using [Kaggle](https://www.kaggle.com) to practice the modeling process.
-3. Providing business insights through reporting and presentation.
+ - 'var_num' is a numberfied version of category, ordered by average sale price for value in category 
+|Feature|Type|Description|
+|---|---|---|
+|MS SubClass|int64| Identifies the type of dwelling involved in the sale |
+|MS Zoning|object| Identifies the general zoning classification of the sale |
+|Lot Frontage|float64| Linear feet of street connected to property |
+|Lot Area|int64| Lot size in square feet |
+|Alley|object| Type of alley access to property |
+|Lot Shape|object| General shape of property | 
+|Land Contour|object| Flatness of the property |
+|Utilities|object| Type of utilities available |
+|Lot Config|object| Lot configuration |
+|Land Slope|object| Slope of property |
+|Neighborhood|object| Physical locations within Ames city limits |
+|Condition 1|object| Proximity to various conditions |
+|Condition 2|object| Proximity to various conditions (if more than one is present) |
+|Bldg Type|object| Type of dwelling |
+|House Style|object| Style of dwelling |
+|Overall Qual|int64| Rates the overall material and finish of the house |
+|Overall Cond|int64| Rates the overall condition of the house |
+|Year Built|int64| Original construction date |
+|Year Remod/Add|int64| Remodel date (same as construction date if no remodeling or additions) |
+|Roof Style|object| Type of roof |
+|Roof Matl|object| Roof material |
+|Exterior 1st|object| Exterior covering on house |
+|Exterior 2nd|object| Exterior covering on house (if more than one material) |
+|Mas Vnr Type|object| Masonry veneer type |
+|Mas Vnr Area|float64| Masonry veneer area in square feet |
+|Exter Qual|int64| Evaluates the quality of the material on the exterior |
+|Exter Cond|int64| Evaluates the present condition of the material on the exterior |
+|Foundation|object| Type of foundation |
+|Bsmt Qual|int64| Evaluates the height of the basement |
+|Bsmt Cond|int64| Evaluates the general condition of the basement |
+|Bsmt Exposure|object| Refers to walkout or garden level walls |
+|BsmtFin Type 1|object| Rating of basement finished area |
+|BsmtFin SF 1|float64| Type 1 finished square feet |
+|BsmtFin Type 2|object| Type 2  Rating of basement finished area (if multiple types) |
+|BsmtFin SF 2|float64| Type 2 finished square feet |
+|Bsmt Unf SF|float64| Unfinished square feet of basement area |
+|Total Bsmt SF|float64| Total square feet of basement area |
+|Heating|object| Type of heating |
+|Heating QC|object| Heating quality and condition |
+|Electrical|object| Electrical system |
+|1st Flr SF|int64| First Floor square feet |
+|2nd Flr SF|int64| Second floor square feet |
+|Low Qual Fin SF|int64| Low quality finished square feet (all floors) |
+|Gr Liv Area|int64| Above grade (ground) living area square feet |
+|Bsmt Full Bath|float64| Basement full bathrooms |
+|Bsmt Half Bath|float64| Basement half bathrooms |
+|Full Bath|int64| Full bathrooms above grade |
+|Half Bath|int64| Half baths above grade |
+|Bedroom AbvGr|int64| Bedrooms above grade (does NOT include basement bedrooms) |
+|Kitchen AbvGr|int64| Kitchens above grade |
+|Kitchen Qual|int64| Kitchen quality |
+|TotRms AbvGrd|int64| Total rooms above grade (does not include bathrooms) |
+|Functional|object| Home functionality (Assume typical unless deductions are warranted) |
+|Fireplaces|int64| Number of fireplaces |
+|Fireplace Qu|int64|  Fireplace quality (ordinal quality) |
+|Garage Type|object| Garage location |
+|Garage Yr Blt|float64| Year garage was built |
+|Garage Finish|object| Interior finish of the garage |
+|Garage Cars|float64| Size of garage in car capacity |
+|Garage Area|float64| Size of garage in square feet |
+|Garage Qual|int64| Garage quality (oridinal) |
+|Garage Cond|int64| Garage condition |
+|Wood Deck SF|int64| Wood deck area in square feet |
+|Open Porch SF|int64| Open porch area in square feet |
+|Enclosed Porch|int64| Enclosed porch area in square feet |
+|3Ssn Porch|int64| Three season porch area in square feet |
+|Screen Porch|int64| Screen porch area in square feet |
+|Pool Area|int64| Pool area in square feet |
+|Pool QC|int64| Pool quality |
+|Fence|object| Fence quality |
+|Misc Feature|object| |
+|Misc Val|int64| Miscellaneous feature not covered in other categories |
+|Mo Sold|int64| Month Sold (MM) |
+|Yr Sold|int64| Year Sold (YYYY) |
+|Sale Type|object| Type of sale |
+|SalePrice|int64| Sale Price $ |
+|total_sf|float64| total square feet of house |
+|baths|float64| total number of baths + half baths |
+|has_porch|int32| has a porch |
+|porch_sf|int64| total porch square footage |
+|sold_after_0601|int64| months after Jan 2006 it was sold |
+|blt_after_1900|int64| Build date relative to 1900 |
+|rem_after_1900|int64| Remodel date relative to 1900 |
+|has_basement|int32| has a basement |
+|neigh_num|int64| Neighborhood number ordered by avg saleprice |
+|ms_num|int64| MS Subclass numberfied (See Above) |
+|zone_num|int64| MS Zone numberfied |
+|lotshape_num|int64| lot shape numberfied (See Above) |
+|landcont_num|int64| land contour numberfied (See Above) |
+|util_num|int64| Utilities numberfied (See Above) |
+|lotconf_num|int64| Lot Configuration numberfied (See Above) |
+|slope_num|int64| Lot Slope numberfied (See Above) |
+|cond1_num|int64| Lot Condition 1 numberfied (See Above) |
+|cond2_num|int64| Lot Condition 2 numberfied (See Above) |
+|bldgtyp_num|int64| Home Building type numberfied (See Above) |
+|houstyle_num|int64| Style of House numberfied (See Above) |
+|roofst_num|int64| Roof Style numberfied (See Above) |
+|roofmat_num|int64| Roof Material numberfied (See Above) |
+|ext1_num|int64| Primary exterior finish numberfied (See Above) |
+|ext2_num|int64| Secondary exterior finish numberfied numberfied (See Above) |
+|masvnrtyp_num|int64| Masonry veneer type numberfied (See Above) |
+|found_num|int64| Foundation type numberfied (See Above) |
+|bsmtexp_num|int64| Basement Exposure numberfied (See Above) |
+|bsmtfin1_num|int64| Basement Finish 1 numberfied (See Above) |
+|bsmtfin2_num|int64| Basement Finish 2 numberfied (See Above) |
+|heat_num|int64| Heating numberfied numberfied (See Above) |
+|elec_num|int64| Electricity numberfied (See Above) |
+|gartyp_num|int64| Garage Type numberfied (See Above) |
+|fence_num|int64| Fence type numberfied numberfied (See Above) |
+|garfin_num|int64| Garage Finish numberfied (See Above) |
+|func_num|int64| Home Functionality numberfied (See Above) |
+|misc_num|int64| Miscelaneous features  numberfied (See Above) |
+|sale_num|int64| Type of sale numberfied (See Above) |
+|Street_Pave|uint8| Street is Paved (1 Y/ 0 N) |
+|Central Air_Y|uint8| Has Central air (1 Y/ 0 N) |
+|Paved Drive_P|uint8| Has Partial Paved Drive (1 Y/ 0 N)  |
+|Paved Drive_Y|uint8| Has Paved Drive (1 Y/ 0 N)|
 
-You are tasked with creating a machine learning model based on the Ames Housing Dataset. This model will predict the price of a house at sale.
+Terms with `value1*value2` are the above terms number values multiplied together. 
 
-The Ames Housing Dataset is contains over 70 columns of different features relating to houses.
+# Brief analysis
 
----
-## Deliverables 
+Looking at the correlation matrix, many of the normal factors one would expect hafve the larges effect on the sale price of a house, namely quality, which neighborhood, how big features are, etc. 
 
-- We are hosting a competition on Kaggle to give you the opportunity to practice your modeling skills. You must upload at least one of your model's predictions to the competition.
-- You will submit a technical report and a presentation in your submission Repo. 
-- You will present your findings to your classmates and instructors.
+Not many of the provided information is negatively correlated by itself to the sale price, and some of them are counter intuitive, for example the worst correlation is between the number of above ground kitchens to the sale price. This is probably driven by lack of statistics for houses with 4 kitchens or underlying factors in that case. 
 
-**You may find that the best model for Kaggle is not the best model to address your data science problem.**
+As would be expected, there traits you normally hear people wanting in a house (big, good qualtiy, big lot, etc) are more strongly correlated with the price. 
 
+Looking at the scatter plots, there seem to be a couple outliers for a few of the single distributions for continuous data. Namely, there are a couple instances in total square footage, that are greatly separated from everything else, probably indicating some relation not show in just those plots, or missing information. When the numberized neighborhood is included into things, those are brought back into line, but then a few more, not so drastic outliers emerge. As much as overfitting isn't desired, there is also a good bit of nuance that might not be able to be expressed by the data no matter how hard is tried. 
 
-## Set up
+Interaction terms are introduced in order to boost the power of the potential fit. This greatly increases the phase space for potential fits, but also dilutes a bit of the conclusion power as a bit of it is throwing things at the wall and seeing what sticks. Looking for continued tendencies in represented variables shows the power of things related to size, condition, and other things, while also showing some of the loss of inference in things like `MS Subclass` showing up as one of the fit parameters, and earlier than something like fireplaces by itself. 
 
-Before you begin working on this project, please do the following:
+The fit itself was limited to 40 variables in order to stay somewhat close to the metric of limiting the number of parameters to $\sim\sqrt(N)$ where N is the total number of entries being fit to. I decided to fit how I did because of a limitation in computing power. If one would want to find the best 40 term pair, they would allow for all combinations of 40 paramaters from the 1856 available to be tested and look for the best result. The issue with this is in this case that would mean $\sim4/cdot10^{82}$ different combinations would need to be tested. To avoid this, I worked to just do iterations one at a time, where the computation limitation would be relative to `N*K` where N is the number of potential parameters and K is the number of fit parameters. The fit could be extended to allow further interaction terms or terms of higher order, but this will also increase runtime significantly. 
 
-1. Sign up for an account on [Kaggle](https://www.kaggle.com/)
-2. **IMPORTANT**: Click here: [Kaggle Competition](https://www.kaggle.com/t/060ea4ec8c78458698c7f9b7e40a00d1) to **join** the competition (otherwise you will not be able to make submissions!)
-3. Review the material on the Kaggle challenge site.
-4. Review the [data description](http://jse.amstat.org/v19n3/decock/DataDocumentation.txt).
+The resulting fit was decided useing a `cross_val_score` with a `cv = 5` to minize the mean squared error. Each iteration would choose one new value, and would be one of the parameters included in the next fit. For example `'total_sf*neigh_num'` is the first selection, and the second iteration looks for the best fit using `'total_sf*neigh_num'` and a new variable. Because many variables are correlated to each other, especially in addition to the cross terms, the goal is that at the number of variables, enough of the variance is covered even though it may not be the optimal available. 
 
-## The Modeling Process
+The overlap between variables is seen when doing it this way. Two of the strongest variables, `'total_sf*neigh_num'` and `'Overall Qual*total_sf'` are strongly correlated to each other, and when the fit chooses one, the other is not found until much later in the process. 
 
-1. The train dataset has all of the columns that you will need to generate and refine your models. The test dataset has all of those columns except for the target that you are trying to predict in your Regression model.
-2. Generate your regression model using the training data. We expect that within this process, you'll be making use of:
-    - train-test split
-    - cross-validation / grid searching for hyperparameters
-    - strong exploratory data analysis to question correlation and relationship across predictive variables
-    - code that reproducibly and consistently applies feature transformation (such as the preprocessing library)
-3. Predict the values for your target column in the test dataset and submit your predictions to Kaggle to see how your model does against unknown data.
-    - **Note**: Kaggle expects to see your submissions in a specific format. Check the challenge's page to make sure you are formatting your CSVs correctly!
-    - **You are limited to models you've learned in class**. In other words, you cannot use XGBoost, Neural Networks or any other more advanced model for this project.
-4. Evaluate your models!
-    - consider your evaluation metrics
-    - consider your baseline score
-    - how can your model be used for inference?
-    - why do you believe your model will generalize to new data?
+Overall my fit with the training data is found to have the following test statistics:
 
-## Submission
+|$R^2$ Train| $R^2$ Test | RSME |
+|---|---|---|
+| 93.643% | 93.803% | $20306 |
 
-- Presentation will be delivered starting at 0915 on **Friday 23 July**. 
-- Your technical report must be submitted in your submission repository by 23:59 on **Friday 23 July**.
-- The Kaggle competition will close by midnight **Saturday 24 July**.
+This fit seems to be performing well, and it seems to have good predictive power. When submitted to Kaggle, it also seems to do well, although the RMSE is on the edge of what is expected from the standard deviation from the cv fit. 
 
-Your technical report must include:
+Ridge and Lasso were also attempted with all of the available parameters, but they do not seem to perform as well with more parameters used compared to the standard LR fit, so the standard LR fit was used. 
 
-- A README.md (that isn't this file)
-- Jupyter notebook(s) with your analysis and models (renamed to describe your project)
-- Data files
-- Presentation slides
-- Any other necessary files (images, etc.)
+Most of the output parameters were interaction terms, which loses a bit of the straight interpretation. But repeated terms can be useful, and looking at terms that may be complementary. 
 
+# Conclusion
 
----
+The fit performs fairly well and seems to be able to predict outcomes well. We can explain more than 93% of the variability of the data with our fit, and the RMSE is closing in on 20k, which is a rough evaluator for far off we expect any prediction. The mean absolute error is around 14k, which is the true average value for how far off any guess would be. 
 
-## Presentation Structure
+I can conclude that we can successfully predict house value with my model, and the recurring themes within it show what consumers value most when buying homes. Some are more obvious in the size dirving prices, but the weight of other features, such as kithcen quality, show the potential for significanlty raising house value with targeted changes. 
 
-- **Presentations should be 5-7min long**
-- Use Google Slides or some other presentation system (Keynote, Powerpoint, etc).
-- Consider your audience. 
-- Start with the **problem** you are solving.
-- Use visuals that are appropriately scaled and interpretable.
-- Talk about your procedure/methodology (high level).
-- Talk about your primary findings.
-- Make sure you provide **clear recommendations** that follow logically from your analyses and narrative and answer your data science problem.
-
-Be sure to rehearse and time your presentation before class.
-
----
-
-## Rubric
-Your instructors will evaluate your project using the following criteria.  You should make sure that you consider and/or follow most if not all of the considerations/recommendations outlined below **while** working through your project.
-
-**Scores will be out of 27 points based on the 9 items in the rubric.** <br>
-*3 points per section*<br>
-
-| Score | Interpretation |
-| --- | --- |
-| **0** | *Project fails to meet the minimum requirements for this item.* |
-| **1** | *Project meets the minimum requirements for this item, but falls significantly short of portfolio-ready expectations.* |
-| **2** | *Project exceeds the minimum requirements for this item, but falls short of portfolio-ready expectations.* |
-| **3** | *Project meets or exceeds portfolio-ready expectations; demonstrates a thorough understanding of every outlined consideration.* |
-
-### The Data Science Process
-
-**Problem Statement**
-- Is it clear?
-- Is it reasonable?
-- Is the audience clearly identified?
-
-**Data Cleaning and EDA**
-- Are missing values dealt with?
-- Are important distributions examined and described?
-- Are outliers identified and addressed?
-- Are appropriate summary statistics provided?
-- Are possible modeling insights to investigate discussed?
-
-**Preprocessing and Modeling**
-- Are categorical variables one-hot encoded or encoded in another logical way?
-- Are features engineered?
-- Have the data been scaled appropriately?
-- Does the student properly split the data for validation/training purposes?
-- Does the student use feature selection to remove noisy or multi-collinear features?
-- Does the student test and evaluate a variety of model types (**AT MINIMUM:** linear regression, lasso, and ridge)?
-- Does the student defend their choice of the best model for this data and problem statement?
-- Does the student explain how the model works and evaluate its performance successes/downfalls?
-
-**Evaluation and Conceptual Understanding**
-- Does the student accurately identify and explain the baseline score?
-- Does the student select and use metrics relevant to the problem statement?
-- Is more than one metric uses to better assess performance?
-- Does the student correctly interpret the results of their model for purposes of inference?
-
-**Conclusion and Recommendations**
-- Are the conclusions/recommendations clearly stated?
-- Does the conclusion answer the original problem statement?
-- Is it clear how the final recommendations were reached? Do they follow logically?
-- Does the student address how their suggestions will likely benefit stakeholders?
-- Are future steps to move the project forward identified?
-
-### Organization and Professionalism
-
-**Project Organization**
-- Are modules imported correctly (using appropriate aliases)?
-- Are data imported/saved using relative paths (so someone can replicate your analysis)?
-- Does the README provide a good executive summary of the project?
-- Is Markdown formatting and comments used appropriately to communicate in the notebooks?
-- Are files & directories organized?
-- Are unnecessary files included?
-- Do files and directories have well-structured, appropriate, consistent names?
-
-**Visualizations**
-- Are sufficient helpful visualizations provided?
-- Are plots labeled properly?
-- Are plots interpreted appropriately?
-- Are plots formatted and scaled appropriately for inclusion in a notebook-based technical report?
-
-**Python Syntax and Control Flow**
-- Is care taken to write human readable code?
-- Is the code syntactically correct (no runtime errors)?
-- Does the code generate desired results (logically correct)?
-- Does the code follow general best practices?
-
-**Presentation**
-- Is the problem statement clearly presented?
-- Does the body of the presentation building address the problem statement and lead to the conclusion?
-- Is the conclusion/recommendations clearly stated?
-- Is the level of technicality appropriate for the intended audience?
-- Does the student deliver their message clearly?
-- Are appropriate visualizations generated for the intended audience?
-- Are visualizations useful for supporting conclusions/explaining findings?
-
-In order to pass the project, students must earn a minimum score of 1 for each category.
-- Earning below a 1 in one or more of the above categories would result in a failing project.
-- While a minimum of 1 in each category is the required threshold for graduation, students should aim to earn at least an average of 1.5 across each category. An average score below 1.5, while it may be passing, means students may want to solicit specific feedback in order to significantly improve the project before showcasing it as part of a portfolio or the job search.
-
-### REMEMBER:
-
-This is a learning environment and you are encouraged to try new things, even if they don't work out as well as you planned! While this rubric outlines what we look for in a _good_ project, it is up to you to go above and beyond to create a _great_ project. **Learn from your failures and you'll grow!**
+Ultimately, this is a model and there are points, especially for outliers, that may not be accounted for. It should be used as a guide, with further due diligence to shore up outstanding uncertainties. 
