@@ -6,6 +6,7 @@ Look to  provide a model to find undervalued properties for investment/flipping 
 # Data Dictionary:
 
  - 'var_num' is a numberfied version of category, ordered by average sale price for value in category 
+ 
 |Feature|Type|Description|
 |---|---|---|
 |MS SubClass|int64| Identifies the type of dwelling involved in the sale |
